@@ -6,7 +6,7 @@
 #    By: emiflake <marvin@student.codam.nl>                +#+                 #
 #                                                         +#+                  #
 #    Created: 2019/09/17 12:26:31 by emiflake            #+#    #+#            #
-#    Updated: 2019/09/18 15:36:14 by emiflake            ########   odam.nl    #
+#    Updated: 2019/09/18 16:24:11 by emiflake            ########   odam.nl    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,7 @@ IFLAGS=		-I$(INC_DIR) -I$(FT_PRINTF_INC)
 LFLAGS=		\
 		-L$(FT_PRINTF_DIR) -lftprintf \
 		-L$(FTIMG_DIR) -lftimg \
-		-L/usr/local/lib -lSDL2 \
+		$(shell sdl2-config --libs) \
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES) $(FT_PRINTF) $(FTIMG)
 	@mkdir -p $(OBJ_DIR)

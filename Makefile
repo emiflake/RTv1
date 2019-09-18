@@ -6,7 +6,7 @@
 #    By: emiflake <marvin@student.codam.nl>                +#+                 #
 #                                                         +#+                  #
 #    Created: 2019/09/17 12:26:31 by emiflake            #+#    #+#            #
-#    Updated: 2019/09/18 15:18:11 by emiflake            ########   odam.nl    #
+#    Updated: 2019/09/18 15:36:14 by emiflake            ########   odam.nl    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ clean_ftimg:
 OBJ_DIR=	.obj
 OBJ_NAMES=	\
 		main \
+		app \
 
 OBJECTS=	$(patsubst %, $(OBJ_DIR)/%.o, $(OBJ_NAMES))
 
@@ -64,6 +65,7 @@ IFLAGS=		-I$(INC_DIR) -I$(FT_PRINTF_INC)
 LFLAGS=		\
 		-L$(FT_PRINTF_DIR) -lftprintf \
 		-L$(FTIMG_DIR) -lftimg \
+		-L/usr/local/lib -lSDL2 \
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES) $(FT_PRINTF) $(FTIMG)
 	@mkdir -p $(OBJ_DIR)

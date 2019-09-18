@@ -1,7 +1,11 @@
-#include <ft_printf.h>
+#include <stdlib.h>
+#include "app.h"
 
 int	main(void)
 {
-	ft_printf("-- Welcome to RTv1 --\n");
-	return (0);
+	t_app	app;
+
+	app_make(&app, 1280, 720);
+	app_run(&app);
+	return (EXIT_SUCCESS);
 }

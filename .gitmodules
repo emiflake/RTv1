@@ -1,0 +1,6 @@
+[submodule "42img"]
+	path = 42img
+	url = git@github.com:emiflake/42img.git
+[submodule "ft_printf"]
+	path = ft_printf
+	url = git@github.com:emiflake/ft_printf.git

@@ -6,7 +6,7 @@
 #    By: emiflake <marvin@student.codam.nl>                +#+                 #
 #                                                         +#+                  #
 #    Created: 2019/09/17 12:26:31 by emiflake            #+#    #+#            #
-#    Updated: 2019/09/18 15:11:03 by emiflake            ########   odam.nl    #
+#    Updated: 2019/09/18 15:18:11 by emiflake            ########   odam.nl    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,18 @@ clean_ft_printf:
 	@echo "$(TIME) $(CMINUS) Cleaning ft_printf"
 	@$(MAKE) -C $(FT_PRINTF_DIR) fclean
 
+FTIMG_DIR=	./42img
+FTIMG=		./$(FTIMG_DIR)/libftimg.a
+FTIMG_INC=	$(FTIMG_INC)/inc
+
+$(FTIMG):
+	@echo "$(TIME) $(CPLUS) Making 42img"
+	@$(MAKE) -C $(FTIMG_DIR)
+
+clean_ftimg:
+	@echo "$(TIME) $(CMINUS) Cleaning 42img"
+	@$(MAKE) -C $(FTIMG_DIR) fclean
+
 OBJ_DIR=	.obj
 OBJ_NAMES=	\
 		main \
@@ -49,9 +61,11 @@ INC_DIR=	./inc
 INCLUDES=	$(wildcard $(INC_DIR)/*.h)
 IFLAGS=		-I$(INC_DIR) -I$(FT_PRINTF_INC)
 
-LFLAGS=		-L$(FT_PRINTF_DIR) -lftprintf
+LFLAGS=		\
+		-L$(FT_PRINTF_DIR) -lftprintf \
+		-L$(FTIMG_DIR) -lftimg \
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES) $(FT_PRINTF)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES) $(FT_PRINTF) $(FTIMG)
 	@mkdir -p $(OBJ_DIR)
 	@echo "$(TIME) $(CPLUS) $@"
 	@$(CC) -c -o $@ $< $(IFLAGS) $(FLAGS)
@@ -60,7 +74,7 @@ $(NAME): $(OBJECTS)
 	@echo "$(TIME) $(CPLUS) $@"
 	@$(CC) -o $(NAME) $(LFLAGS) $(OBJECTS)
 
-clean: clean_ft_printf
+clean: clean_ft_printf clean_ftimg
 	@echo "$(TIME) $(CMINUS) $(OBJ_DIR)"
 	@$(RM) -rf $(OBJ_DIR)
 

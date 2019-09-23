@@ -6,7 +6,7 @@
 /*   By: emiflake <marvin@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/18 15:21:20 by emiflake       #+#    #+#                */
-/*   Updated: 2019/09/23 18:45:06 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/09/23 19:27:36 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <ft_printf.h>
 
 #include "app.h"
+#include "color.h"
 #include "primitives.h"
 
 int	app_make(t_app *app, size_t width, size_t height)
@@ -79,7 +80,8 @@ void	app_tick(t_app *app)
 			if (container_intersect(app->scene->objects, &ray, &isect))
 			{
 				prim_put_pixel(
-					app->screen_surface, pixel_pos.x, pixel_pos.y, 0xffffff);
+					app->screen_surface, pixel_pos.x, pixel_pos.y,
+						gfx_color_from_rgb(rgb_clamp((t_rgb){255.0 - isect.t * 10.0, 255.0 - isect.t * 10.0, 255.0 - isect.t * 10.0})));
 			}
 			pixel_pos.x++;
 		}

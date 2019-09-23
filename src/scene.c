@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 16:10:45 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/23 18:59:02 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/09/23 19:29:44 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,18 @@ void			my_scene_make(t_scene *scene)
 		.radius = 5.0,
 	}};
 	container_push_object(scene->objects, my_object);
+	my_object = (t_object*)malloc(sizeof(t_object));
+	if (!my_object)
+	{
+		ft_printf("Failed to allocate my_object\n");
+		exit(EXIT_FAILURE);
+	}
+	my_object->shape.type = SPHERE;
+	my_object->shape.value = (t_shape_value){(t_sphere){
+		.origin = (t_vec3) { 10.0, 0.0, 10.0 },
+		.radius = 5.0,
+	}};
+	container_push_object(scene->objects, my_object);
 }
 
 void			scene_update(t_scene *scene, t_keystate *ks)
@@ -60,7 +72,11 @@ void			scene_update(t_scene *scene, t_keystate *ks)
 	if (is_key_down(ks, SDLK_d))
 		camera_move(&scene->camera, (t_vec3){1.0, 0.0, 0.0});
 	if (is_key_down(ks, SDLK_w))
-		camera_move(&scene->camera, (t_vec3){0.0, 0.0, 1.0});
-	if (is_key_down(ks, SDLK_s))
 		camera_move(&scene->camera, (t_vec3){0.0, 0.0, -1.0});
+	if (is_key_down(ks, SDLK_s))
+		camera_move(&scene->camera, (t_vec3){0.0, 0.0, 1.0});
+	if (is_key_down(ks, SDLK_q))
+		scene->camera.rotation.y -= 0.05;
+	if (is_key_down(ks, SDLK_e))
+		scene->camera.rotation.y += 0.05;
 }

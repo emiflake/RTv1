@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 17:43:01 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/23 18:55:47 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/09/23 19:14:46 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@
 
 void	camera_move(t_camera *camera, const t_vec3 delta)
 {
-	vec3_add_mut(&camera->origin, &delta);
+	camera->origin.x +=
+		cos(camera->rotation.y) * delta.x - sin(camera->rotation.y) * delta.z;
+	camera->origin.y += delta.y;
+	camera->origin.z +=
+		-cos(camera->rotation.y) * delta.z - sin(camera->rotation.y) * delta.x;
 }
 
 void	camera_project_ray(
@@ -31,6 +35,7 @@ void	camera_project_ray(
 	py = (1.0 - 2.0 * ((double)pos->y + 0.5) / dim->y) * camera->t_f;
 	direction = (t_vec3) { px, py, 1.0 };
 	vec3_normalize(&direction);
+	vec3_roty(&direction, camera->rotation.y);
 	ray->direction = direction;
 	ray->level = 5;
 	ray->origin = camera->origin;

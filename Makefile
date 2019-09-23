@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         ::::::::             #
-#    Makefile                                                :+:    :+:        #
+#    Makefile                                           :+:    :+:             #
 #                                                      +:+                     #
 #    By: emiflake <marvin@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/09/17 12:26:31 by emiflake       #+#    #+#                 #
-#    Updated: 2019/09/23 18:49:20 by nmartins            ########   odam.nl    #
+#    Updated: 2019/09/23 19:17:57 by nmartins      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,6 +65,7 @@ OBJ_NAMES=	\
 		vec3_mut \
 		camera \
 		keystate \
+		color \
 
 OBJECTS=	$(patsubst %, $(OBJ_DIR)/%.o, $(OBJ_NAMES))
 

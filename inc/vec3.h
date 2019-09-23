@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 15:14:33 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/23 18:46:11 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/09/23 19:06:18 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_vec3			vec3_scale(const t_vec3 *a, double nb);
 t_vec3			vec3_multi(const t_vec3 *a, double mag);
 
 t_vec3			vec3_rotx(t_vec3 *a, double nb);
-t_vec3			vec3_roty(t_vec3 *a, double nb);
+void			vec3_roty(t_vec3 *a, double nb);
 t_vec3			vec_rotz(t_vec3 *a, double nb);
 
 void			vec3_add_mut(t_vec3 *v, const t_vec3 *w);

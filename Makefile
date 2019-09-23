@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                              ::::::::        #
+#                                                         ::::::::             #
 #    Makefile                                                :+:    :+:        #
-#                                                           +:+                #
-#    By: emiflake <marvin@student.codam.nl>                +#+                 #
-#                                                         +#+                  #
-#    Created: 2019/09/17 12:26:31 by emiflake            #+#    #+#            #
-#    Updated: 2019/09/18 16:24:11 by emiflake            ########   odam.nl    #
+#                                                      +:+                     #
+#    By: emiflake <marvin@student.codam.nl>           +#+                      #
+#                                                    +#+                       #
+#    Created: 2019/09/17 12:26:31 by emiflake       #+#    #+#                 #
+#    Updated: 2019/09/23 18:49:20 by nmartins            ########   odam.nl    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ NAME=RTv1
 CC=clang
 AR=ar
 RM=rm
-FLAGS=-Werror -Wall -Wextra
+EXTRA=
+FLAGS=-Werror -Wall -Wextra -O2 $(EXTRA)
 
 all: $(NAME)
 
@@ -52,6 +53,18 @@ OBJ_DIR=	.obj
 OBJ_NAMES=	\
 		main \
 		app \
+		primitives \
+		scene \
+		object_container \
+		shape \
+		sphere \
+		vec3_add \
+		vec3_calc \
+		vec3_length \
+		vec3_rot \
+		vec3_mut \
+		camera \
+		keystate \
 
 OBJECTS=	$(patsubst %, $(OBJ_DIR)/%.o, $(OBJ_NAMES))
 
@@ -60,7 +73,8 @@ SOURCES=	$(patsubst %, %.c, $(OBJ_NAMES))
 
 INC_DIR=	./inc
 INCLUDES=	$(wildcard $(INC_DIR)/*.h)
-IFLAGS=		-I$(INC_DIR) -I$(FT_PRINTF_INC)
+IFLAGS=		-I$(INC_DIR) -I$(FT_PRINTF_INC) \
+			-I$(shell brew --prefix)/include
 
 LFLAGS=		\
 		-L$(FT_PRINTF_DIR) -lftprintf \

@@ -1,40 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   vec3_rot.c                                         :+:    :+:            */
+/*   vec3_length.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/09/23 15:19:39 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/23 16:55:25 by nmartins      ########   odam.nl         */
+/*   Created: 2019/09/23 16:54:14 by nmartins       #+#    #+#                */
+/*   Updated: 2019/09/23 16:55:13 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec3.h"
 
-t_vec3	vec3_rotx(t_vec3 *a, double nb)
+double	vec3_length2(const t_vec3 *a)
 {
-	return ((t_vec3){
-		a->x,
-		a->y * cos(nb) - a->z * sin(nb),
-		a->y * sin(nb) + a->z * cos(nb)
-	});
+	return (a->x * a->x + a->y * a->y + a->z * a->z);
 }
 
-t_vec3	vec3_roty(t_vec3 *a, double nb)
+double	vec3_length(const t_vec3 *a)
 {
-	return ((t_vec3){
-		a->x * cos(nb) + a->z * sin(nb),
-		a->y,
-		a->z * cos(nb) - a->x * sin(nb)
-	});
-}
-
-t_vec3	vec_rotz(t_vec3 *a, double nb)
-{
-	return ((t_vec3){
-		a->x * cos(nb) - a->y * sin(nb),
-		a->x * sin(nb) - a->y * cos(nb),
-		a->z
-	});
+	return (sqrt(vec3_length2(a)));
 }

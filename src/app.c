@@ -6,7 +6,7 @@
 /*   By: emiflake <marvin@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/18 15:21:20 by emiflake       #+#    #+#                */
-/*   Updated: 2019/09/23 19:27:36 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/09/26 20:04:17 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,10 @@ int	app_run(t_app *app)
 			{
 				if (evt.key.keysym.sym == SDLK_ESCAPE)
 					app->running = false;
-				keystate_key_down(&app->keystate, evt.key.keysym.sym);
+				keystate_key_down(&app->keystate, evt.key.keysym.scancode);
 			}
 			if (evt.type == SDL_KEYUP)
-				keystate_key_up(&app->keystate, evt.key.keysym.sym);
+				keystate_key_up(&app->keystate, evt.key.keysym.scancode);
 		}
 		app_tick(app);
 	}

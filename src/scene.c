@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 16:10:45 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/23 19:29:44 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/09/26 20:04:02 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,16 @@ void			my_scene_make(t_scene *scene)
 void			scene_update(t_scene *scene, t_keystate *ks)
 {
 	(void)scene;
-	if (is_key_down(ks, SDLK_a))
+	if (is_key_down(ks, SDL_SCANCODE_A))
 		camera_move(&scene->camera, (t_vec3){-1.0, 0.0, 0.0});
-	if (is_key_down(ks, SDLK_d))
+	if (is_key_down(ks, SDL_SCANCODE_D))
 		camera_move(&scene->camera, (t_vec3){1.0, 0.0, 0.0});
-	if (is_key_down(ks, SDLK_w))
+	if (is_key_down(ks, SDL_SCANCODE_W))
 		camera_move(&scene->camera, (t_vec3){0.0, 0.0, -1.0});
-	if (is_key_down(ks, SDLK_s))
+	if (is_key_down(ks, SDL_SCANCODE_S))
 		camera_move(&scene->camera, (t_vec3){0.0, 0.0, 1.0});
-	if (is_key_down(ks, SDLK_q))
+	if (is_key_down(ks, SDL_SCANCODE_LEFT))
 		scene->camera.rotation.y -= 0.05;
-	if (is_key_down(ks, SDLK_e))
+	if (is_key_down(ks, SDL_SCANCODE_RIGHT))
 		scene->camera.rotation.y += 0.05;
 }

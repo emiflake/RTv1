@@ -6,12 +6,13 @@
 /*   By: emiflake <marvin@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/18 15:21:20 by emiflake       #+#    #+#                */
-/*   Updated: 2019/09/26 20:04:17 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/09/26 20:14:48 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <SDL2/SDL.h>
 #include <ft_printf.h>
+#include <libft.h>
 
 #include "app.h"
 #include "color.h"
@@ -48,14 +49,7 @@ int	app_make(t_app *app, size_t width, size_t height)
 		ft_printf("Unable to allocate scene\n");
 		return (1);
 	}
-	///// ALERT!!!!!!
-	///// ALERT!!!!!!
-	///// ALERT DO NOT HAND IN
-	bzero(&app->keystate, sizeof(app->keystate));
-	///// ALERT!!!!!!
-	///// ALERT!!!!!!
-	///// ALERT!!!!!!
-	///// ALERT!!!!!!
+	ft_bzero(&app->keystate, sizeof(app->keystate));
 	my_scene_make(app->scene);
 	return (0);
 }

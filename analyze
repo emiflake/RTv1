@@ -1,0 +1,3 @@
+#!/bin/bash
+# This command analyzes the project for clang bugs
+scan-build -V -o scanreport make re -j10

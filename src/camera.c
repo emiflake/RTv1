@@ -6,9 +6,11 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 17:43:01 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/23 19:14:46 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/09/27 13:42:41 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <ft_printf.h>
 
 #include "camera.h"
 #include "vec2.h"
@@ -34,8 +36,10 @@ void	camera_project_ray(
 	px = (2.0 * (((double)pos->x + 0.5) / dim->x) - 1.0) * aspect_ratio * camera->t_f;
 	py = (1.0 - 2.0 * ((double)pos->y + 0.5) / dim->y) * camera->t_f;
 	direction = (t_vec3) { px, py, 1.0 };
-	vec3_normalize(&direction);
+
+	vec3_rotx(&direction, camera->rotation.x);
 	vec3_roty(&direction, camera->rotation.y);
+	vec3_normalize(&direction);
 	ray->direction = direction;
 	ray->level = 5;
 	ray->origin = camera->origin;

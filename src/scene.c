@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 16:10:45 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/26 20:09:25 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/09/27 13:43:05 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,8 @@ void			scene_update(t_scene *scene, t_keystate *ks)
 		scene->camera.rotation.y -= 0.05 * speed;
 	if (is_key_down(ks, SDL_SCANCODE_RIGHT))
 		scene->camera.rotation.y += 0.05 * speed;
+	if (is_key_down(ks, SDL_SCANCODE_UP))
+		scene->camera.rotation.x -= 0.05 * speed;
+	if (is_key_down(ks, SDL_SCANCODE_DOWN))
+		scene->camera.rotation.x += 0.05 * speed;
 }

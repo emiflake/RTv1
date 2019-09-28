@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 16:10:45 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/27 13:43:05 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/09/28 17:31:14 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 #include "scene.h"
 #include "app.h"
+#include "color.h"
 
 void			scene_render_to_surface(
 	const t_scene *scene, SDL_Surface *surface)
@@ -31,6 +32,12 @@ void			my_scene_make(t_scene *scene)
 		.rotation = (t_vec3) { 0.0, 0.0, 0.0 },
 		.fov = 70.0,
 	};
+	scene->lights = lights_make();
+	if (!scene->lights)
+	{
+		ft_printf("Failed to allocate t_light container\n");
+		exit(EXIT_FAILURE);
+	}
 	camera_recompute(&scene->camera);
 	scene->objects = container_make();
 	if (!scene->objects)
@@ -44,8 +51,14 @@ void			my_scene_make(t_scene *scene)
 		ft_printf("Failed to allocate my_object\n");
 		exit(EXIT_FAILURE);
 	}
+	my_object->material = (t_material){
+		.albedo = (t_vec3) { 255, 0, 0 },
+		.ambient = .3,
+		.diffuse = .7,
+		.specular = .0,
+	};
 	my_object->shape.type = SPHERE;
-	my_object->shape.value = (t_shape_value){(t_sphere){
+	my_object->shape.value = (t_shape_value){.sphere = (t_sphere){
 		.origin = (t_vec3) { 0.0, 0.0, 10.0 },
 		.radius = 5.0,
 	}};
@@ -56,17 +69,45 @@ void			my_scene_make(t_scene *scene)
 		ft_printf("Failed to allocate my_object\n");
 		exit(EXIT_FAILURE);
 	}
+	my_object->material = (t_material){
+		.albedo = (t_vec3) { 0, 255, 0 },
+		.ambient = .3,
+		.diffuse = .7,
+		.specular = .0,
+	};
 	my_object->shape.type = SPHERE;
-	my_object->shape.value = (t_shape_value){(t_sphere){
+	my_object->shape.value = (t_shape_value){.sphere = (t_sphere){
 		.origin = (t_vec3) { 10.0, 0.0, 10.0 },
 		.radius = 5.0,
 	}};
 	container_push_object(scene->objects, my_object);
+	my_object = (t_object*)malloc(sizeof(t_object));
+	if (!my_object)
+	{
+		ft_printf("Failed to allocate my_object\n");
+		exit(EXIT_FAILURE);
+	}
+	my_object->material = (t_material){
+		.albedo = (t_vec3) { 255, 255, 255 },
+		.ambient = .3,
+		.diffuse = .7,
+		.specular = .0,
+	};
+	my_object->shape.type = PLANE;
+	my_object->shape.value = (t_shape_value){.plane = (t_plane){
+		.origin = ((t_vec3) {0.0, -10.0, 0.0}),
+		.normal = ((t_vec3) {0.0, 1.0, 0.0}),
+	}};
+	container_push_object(scene->objects, my_object);
+	lights_push_light(scene->lights, (t_light){
+		.position = (t_vec3){0, 10, 10},
+	});
 }
 
 void			scene_update(t_scene *scene, t_keystate *ks)
 {
 	const double speed = is_key_down(ks, SDL_SCANCODE_LSHIFT) ? 5.0 : 1.0;
+
 	if (is_key_down(ks, SDL_SCANCODE_A))
 		camera_move(&scene->camera, (t_vec3){-speed, 0.0, 0.0});
 	if (is_key_down(ks, SDL_SCANCODE_D))
@@ -76,9 +117,9 @@ void			scene_update(t_scene *scene, t_keystate *ks)
 	if (is_key_down(ks, SDL_SCANCODE_S))
 		camera_move(&scene->camera, (t_vec3){0.0, 0.0, speed});
 	if (is_key_down(ks, SDL_SCANCODE_Q))
-		camera_move(&scene->camera, (t_vec3){0.0, speed, 0.0});
-	if (is_key_down(ks, SDL_SCANCODE_E))
 		camera_move(&scene->camera, (t_vec3){0.0, -speed, 0.0});
+	if (is_key_down(ks, SDL_SCANCODE_E))
+		camera_move(&scene->camera, (t_vec3){0.0, speed, 0.0});
 	if (is_key_down(ks, SDL_SCANCODE_LEFT))
 		scene->camera.rotation.y -= 0.05 * speed;
 	if (is_key_down(ks, SDL_SCANCODE_RIGHT))

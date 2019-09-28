@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   intersection.h                                     :+:    :+:            */
+/*   material.h                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/09/23 15:41:02 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/28 16:15:53 by nmartins      ########   odam.nl         */
+/*   Created: 2019/09/28 16:06:53 by nmartins       #+#    #+#                */
+/*   Updated: 2019/09/28 16:19:38 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INTERSECTION_H
-# define INTERSECTION_H
+#ifndef MATERIAL_H
+# define MATERIAL_H
 
 # include "vec3.h"
+# include "color.h"
 
-struct s_object;
-
-typedef struct	s_intersection
+typedef struct	s_material
 {
-	double			t;
-	t_vec3			p;
-	t_vec3			normal;
+	t_vec3	albedo;
 
-	struct s_object	*object;
-}				t_intersection;
+	double	ambient;
+	double	diffuse;
+	double	specular;
+}				t_material;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: emiflake <marvin@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/18 15:21:20 by emiflake       #+#    #+#                */
-/*   Updated: 2019/09/26 20:14:48 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/09/28 17:39:38 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,47 @@ int	app_make(t_app *app, size_t width, size_t height)
 	return (0);
 }
 
-void	app_tick(t_app *app)
+static uint32_t	trace(
+	const t_scene *scene, const t_intersection *isect, const t_ray *ray)
+{
+	t_vec3	ambient_contribution;
+	t_vec3	light_contribution;
+	t_vec3	color;
+
+	ambient_contribution = vec3_multi(
+		&isect->object->material.albedo, isect->object->material.ambient);
+	light_contribution = light_contribution_at(scene, isect, ray);
+	color = (t_vec3){0.0, 0.0, 0.0};
+	vec3_add_mut(&color, &ambient_contribution);
+	vec3_add_mut(&color, &light_contribution);
+	return (gfx_color_from_rgb(
+		(t_rgb){(int)color.x, (int)color.y, (int)color.z}));
+}
+
+static void	render_pixel(t_app *app, const t_vec2 *pixel_pos)
 {
 	const t_vec2	dim = (t_vec2){(double)app->width, (double)app->height};
-	t_vec2			pixel_pos;
 	t_ray			ray;
 	t_intersection	isect;
+
+	camera_project_ray(&app->scene->camera, pixel_pos, &dim, &ray);
+	isect.t = INFINITY;
+	if (container_intersect(app->scene->objects, &ray, &isect))
+	{
+		prim_put_pixel(
+			app->screen_surface, pixel_pos->x,
+				pixel_pos->y, trace(app->scene, &isect, &ray));
+	}
+	else
+	{
+		prim_put_pixel(
+			app->screen_surface, pixel_pos->x, pixel_pos->y, 0xCCCCFF);
+	}
+}
+
+void	app_tick(t_app *app)
+{
+	t_vec2			pixel_pos;
 
 	scene_update(app->scene, &app->keystate);
 	pixel_pos.y = 0;
@@ -69,14 +104,7 @@ void	app_tick(t_app *app)
 		pixel_pos.x = 0;
 		while (pixel_pos.x < app->width)
 		{
-			camera_project_ray(&app->scene->camera, &pixel_pos, &dim, &ray);
-			isect.t = INFINITY;
-			if (container_intersect(app->scene->objects, &ray, &isect))
-			{
-				prim_put_pixel(
-					app->screen_surface, pixel_pos.x, pixel_pos.y,
-						gfx_color_from_rgb(rgb_clamp((t_rgb){255.0 - isect.t * 10.0, 255.0 - isect.t * 10.0, 255.0 - isect.t * 10.0})));
-			}
+			render_pixel(app, &pixel_pos);
 			pixel_pos.x++;
 		}
 		pixel_pos.y++;

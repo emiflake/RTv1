@@ -6,7 +6,7 @@
 #    By: emiflake <marvin@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/09/17 12:26:31 by emiflake       #+#    #+#                 #
-#    Updated: 2019/09/26 20:15:24 by nmartins      ########   odam.nl          #
+#    Updated: 2019/09/28 16:54:10 by nmartins      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,6 +70,7 @@ OBJ_NAMES=	\
 		object_container \
 		shape \
 		sphere \
+		plane \
 		vec3_add \
 		vec3_calc \
 		vec3_length \
@@ -78,6 +79,7 @@ OBJ_NAMES=	\
 		camera \
 		keystate \
 		color \
+		light_container \
 
 OBJECTS=	$(patsubst %, $(OBJ_DIR)/%.o, $(OBJ_NAMES))
 

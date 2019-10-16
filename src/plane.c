@@ -6,12 +6,23 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/28 15:56:22 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/28 15:56:24 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/16 15:40:03 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shapes.h"
 #include "shape.h"
+
+t_shape			make_plane(t_vec3 pos, t_vec3 normal)
+{
+	return ((t_shape){
+		.type = PLANE,
+		.value = (t_shape_value){.plane = (t_plane){
+			.origin = pos,
+			.normal = normal
+		}},
+	});
+}
 
 static double	t_calc(const t_plane *plane, const t_ray *ray)
 {

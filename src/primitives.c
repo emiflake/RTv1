@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 14:49:50 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/23 18:12:06 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/16 15:02:14 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ void		prim_put_pixel(
 
 	pixels_arr = (uint32_t*)surface->pixels;
 	if (x >= (size_t)surface->w && y >= (size_t)surface->h)
-	{
-		ft_printf("Out of bounds put_pixel: %lu, %lu\n", x, y);
-		exit(0);
-	}
+		return ;
 	loc = &pixels_arr[x + y * surface->w];
 	*loc = color;
 }

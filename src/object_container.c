@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 16:19:02 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/28 17:48:47 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/16 18:54:35 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,7 @@
 
 #include "object_container.h"
 
-t_object_container	*container_make(void)
-{
-	t_object_container	*container;
-
-	container = (t_object_container*)malloc(sizeof(t_object_container));
-	if (!container)
-		return (NULL);
-	container->root = NULL;
-	return (container);
-}
-
-static void			push_node(t_object_node **node, t_object *obj)
+void				container_push_object(t_object_node **node, t_object *obj)
 {
 	t_object_node	*new_node;
 
@@ -39,12 +28,6 @@ static void			push_node(t_object_node **node, t_object *obj)
 	new_node->object = obj;
 	new_node->next = *node;
 	*node = new_node;
-}
-
-void				container_push_object(
-	t_object_container *container, t_object *obj)
-{
-	push_node(&container->root, obj);
 }
 
 bool				container_does_intersect(
@@ -83,4 +66,14 @@ bool				container_intersect(
 		curr_node = curr_node->next;
 	}
 	return (found_intersection);
+}
+
+void				container_free(
+	t_object_node *node)
+{
+	if (!node)
+		return ;
+	container_free(node->next);
+	free(node->object);
+	free(node);
 }

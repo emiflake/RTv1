@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 15:09:46 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/28 17:41:10 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/16 18:40:52 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,14 @@ struct s_app;
 typedef struct	s_scene
 {
 	t_camera			camera;
-	t_object_container	*objects;
-	t_light_container	*lights;
+	t_object_container	objects;
+	t_light_container	lights;
 }				t_scene;
-
-void			scene_render_to_surface(
-	const t_scene *scene, SDL_Surface *surface);
-
 
 void			my_scene_make(t_scene *scene);
 
 void			scene_update(t_scene *scene, t_keystate *ks);
-
+void			scene_free(t_scene **scene);
 
 t_vec3			light_contribution_at(
 	const t_scene *scene, const t_intersection *isect, const t_ray *ray);

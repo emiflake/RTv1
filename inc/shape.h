@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 15:31:06 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/28 17:42:48 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/16 18:54:58 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define SHAPE_H
 
 # include <stdbool.h>
-
 
 # include "ray.h"
 # include "intersection.h"

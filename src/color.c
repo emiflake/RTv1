@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 19:17:36 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/23 19:28:57 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/16 15:00:24 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** Potentially useless alpha
 */
 
-int		gfx_color(int r, int g, int b, int a)
+int				gfx_color(int r, int g, int b, int a)
 {
 	int color;
 
@@ -29,7 +29,7 @@ int		gfx_color(int r, int g, int b, int a)
 	return (color);
 }
 
-t_rgb	gfx_hsl2rgb(t_hsl hsl)
+t_rgb			gfx_hsl2rgb(t_hsl hsl)
 {
 	double	chroma;
 	double	hue_epoch;
@@ -57,7 +57,7 @@ t_rgb	gfx_hsl2rgb(t_hsl hsl)
 	return (rgb);
 }
 
-int		gfx_color_from_rgb(t_rgb rgb)
+int				gfx_color_from_rgb(t_rgb rgb)
 {
 	return (gfx_color(rgb.r, rgb.g, rgb.b, 255));
 }
@@ -71,7 +71,7 @@ static int		clamp_int(int x, int min, int max)
 	return (x);
 }
 
-t_rgb	rgb_clamp(const t_rgb rgb)
+t_rgb			rgb_clamp(const t_rgb rgb)
 {
 	return ((t_rgb) {
 		.r = clamp_int(rgb.r, 0, 255),

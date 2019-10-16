@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/28 16:54:18 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/28 17:49:39 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/16 18:54:41 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_light_container	*lights_make(void)
 	return (container);
 }
 
-static void			push_node(t_light_node **node, t_light light)
+void				lights_push_light(t_light_node **node, t_light light)
 {
 	t_light_node	*new_node;
 
@@ -42,42 +42,41 @@ static void			push_node(t_light_node **node, t_light light)
 	*node = new_node;
 }
 
-void				lights_push_light(
-	t_light_container *container, t_light light)
-{
-	push_node(&container->root, light);
-}
-
 t_vec3				light_contribution_at(
 	const t_scene *scene, const t_intersection *isect, const t_ray *ray)
 {
-	t_vec3			contribution;
-	t_light_node	*curr_node;
-	t_vec3			light_dir;
-	t_vec3			curr_diffuse;
-	double			amount;
-	t_vec3			bias;
-	t_ray			shadow_ray;
+	t_light_container_f	f;
 
-	(void)ray;
-	contribution = (t_vec3){0,0,0};
-	curr_node = scene->lights->root;
-	while (curr_node)
+	f.diff_contribution = (t_vec3){0, 0, 0};
+	f.curr_node = scene->lights.root;
+	while (f.curr_node)
 	{
-		light_dir = vec3_sub(&curr_node->light.position, &isect->p);
-		vec3_normalize(&light_dir);
-		amount = vec3_dot(&isect->normal, &light_dir);
-		amount = amount > 0.0 ? amount : 0.0;
-		curr_diffuse = vec3_multi(&isect->object->material.albedo, amount);
-		bias = vec3_multi(&isect->normal, 0.001);
-		shadow_ray = (t_ray){ .origin = vec3_add(&isect->p, &bias),
-			.direction = light_dir, .level = ray->level - 1 };
-		if (!container_does_intersect(scene->objects, &shadow_ray))
-			vec3_add_mut(&contribution, &curr_diffuse);
-		contribution.x = contribution.x > 255 ? 255 : contribution.x;
-		contribution.y = contribution.y > 255 ? 255 : contribution.y;
-		contribution.z = contribution.z > 255 ? 255 : contribution.z;
-		curr_node = curr_node->next;
+		f.light_dir = vec3_sub(&f.curr_node->light.position, &isect->p);
+		vec3_normalize(&f.light_dir);
+		f.amount = vec3_dot(&isect->normal, &f.light_dir);
+		f.amount = f.amount > 0.0 ? f.amount : 0.0;
+		f.curr_diffuse = vec3_multi(&isect->object->material.albedo,
+			f.amount * f.curr_node->light.brightness);
+		f.bias = vec3_multi(&isect->normal, 0.001);
+		f.shadow_ray = (t_ray){ .origin = vec3_add(&isect->p, &f.bias),
+			.direction = f.light_dir, .level = ray->level - 1 };
+		f.shisect.t = INFINITY;
+		if (!container_intersect(&scene->objects, &f.shadow_ray, &f.shisect)
+	|| f.shisect.t > vec3_distance(&isect->p, &f.curr_node->light.position))
+			vec3_add_mut(&f.diff_contribution, &f.curr_diffuse);
+		f.curr_node = f.curr_node->next;
 	}
-	return (vec3_multi(&contribution, isect->object->material.diffuse));
+	f.diff_contribution = vec3_clamp_as_color(f.diff_contribution);
+	f.diff_contribution = vec3_multi(&f.diff_contribution,
+		isect->object->material.diffuse);
+	return (f.diff_contribution);
+}
+
+void				lights_free(
+	t_light_node *node)
+{
+	if (!node)
+		return ;
+	lights_free(node->next);
+	free(node);
 }

@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 16:10:45 by nmartins       #+#    #+#                */
-/*   Updated: 2019/09/28 17:31:14 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/16 18:54:48 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,92 +16,54 @@
 #include "app.h"
 #include "color.h"
 
-void			scene_render_to_surface(
-	const t_scene *scene, SDL_Surface *surface)
+void			*crash_alloc(size_t len)
 {
-	(void)scene;
-	(void)surface;
+	void *ptr;
+
+	ptr = malloc(len);
+	if (!ptr)
+		exit(EXIT_FAILURE);
+	return (ptr);
+}
+
+void			make_objects(t_scene *scene)
+{
+	t_object	*my_object;
+
+	my_object = (t_object*)crash_alloc(sizeof(t_object));
+	my_object->material = make_material(RED, 0.2, 0.8);
+	my_object->shape = make_sphere(0.0, 5.0, 10.0, 5.0);
+	container_push_object(&scene->objects.root, my_object);
+	my_object = (t_object*)crash_alloc(sizeof(t_object));
+	my_object->material = make_material(GREEN, 0.2, 0.8);
+	my_object->shape = make_sphere(10.0, 5.0, 10.0, 5.0);
+	container_push_object(&scene->objects.root, my_object);
+	my_object = (t_object*)crash_alloc(sizeof(t_object));
+	my_object->material = make_material(BLUE, 0.2, 0.8);
+	my_object->shape = make_sphere(-10.0, 5.0, 10.0, 5.0);
+	container_push_object(&scene->objects.root, my_object);
+	my_object = (t_object*)crash_alloc(sizeof(t_object));
+	my_object->material = make_material(WHITE, 0.2, 0.8);
+	my_object->shape =
+		make_plane((t_vec3){0.0, 0.0, 0.0}, (t_vec3){0.0, 1.0, 0.0});
+	container_push_object(&scene->objects.root, my_object);
 }
 
 void			my_scene_make(t_scene *scene)
 {
-	t_object	*my_object;
-
 	scene->camera = (t_camera){
-		.origin = (t_vec3) { 0.1, 0.0, 0.0 },
+		.origin = (t_vec3) { 0.0, 5.0, -10.0 },
 		.rotation = (t_vec3) { 0.0, 0.0, 0.0 },
 		.fov = 70.0,
 	};
-	scene->lights = lights_make();
-	if (!scene->lights)
-	{
-		ft_printf("Failed to allocate t_light container\n");
-		exit(EXIT_FAILURE);
-	}
+	scene->lights.root = NULL;
+	scene->objects.root = NULL;
 	camera_recompute(&scene->camera);
-	scene->objects = container_make();
-	if (!scene->objects)
-	{
-		ft_printf("Failed to allocate t_object container\n");
-		exit(EXIT_FAILURE);
-	}
-	my_object = (t_object*)malloc(sizeof(t_object));
-	if (!my_object)
-	{
-		ft_printf("Failed to allocate my_object\n");
-		exit(EXIT_FAILURE);
-	}
-	my_object->material = (t_material){
-		.albedo = (t_vec3) { 255, 0, 0 },
-		.ambient = .3,
-		.diffuse = .7,
-		.specular = .0,
-	};
-	my_object->shape.type = SPHERE;
-	my_object->shape.value = (t_shape_value){.sphere = (t_sphere){
-		.origin = (t_vec3) { 0.0, 0.0, 10.0 },
-		.radius = 5.0,
-	}};
-	container_push_object(scene->objects, my_object);
-	my_object = (t_object*)malloc(sizeof(t_object));
-	if (!my_object)
-	{
-		ft_printf("Failed to allocate my_object\n");
-		exit(EXIT_FAILURE);
-	}
-	my_object->material = (t_material){
-		.albedo = (t_vec3) { 0, 255, 0 },
-		.ambient = .3,
-		.diffuse = .7,
-		.specular = .0,
-	};
-	my_object->shape.type = SPHERE;
-	my_object->shape.value = (t_shape_value){.sphere = (t_sphere){
-		.origin = (t_vec3) { 10.0, 0.0, 10.0 },
-		.radius = 5.0,
-	}};
-	container_push_object(scene->objects, my_object);
-	my_object = (t_object*)malloc(sizeof(t_object));
-	if (!my_object)
-	{
-		ft_printf("Failed to allocate my_object\n");
-		exit(EXIT_FAILURE);
-	}
-	my_object->material = (t_material){
-		.albedo = (t_vec3) { 255, 255, 255 },
-		.ambient = .3,
-		.diffuse = .7,
-		.specular = .0,
-	};
-	my_object->shape.type = PLANE;
-	my_object->shape.value = (t_shape_value){.plane = (t_plane){
-		.origin = ((t_vec3) {0.0, -10.0, 0.0}),
-		.normal = ((t_vec3) {0.0, 1.0, 0.0}),
-	}};
-	container_push_object(scene->objects, my_object);
-	lights_push_light(scene->lights, (t_light){
-		.position = (t_vec3){0, 10, 10},
-	});
+	make_objects(scene);
+	lights_push_light(&scene->lights.root, (t_light){
+		.position = (t_vec3){0, 5.0, 0}, .brightness = 1.0, });
+	lights_push_light(&scene->lights.root, (t_light){
+		.position = (t_vec3){0, 20, 10}, .brightness = 1.0, });
 }
 
 void			scene_update(t_scene *scene, t_keystate *ks)
@@ -128,4 +90,12 @@ void			scene_update(t_scene *scene, t_keystate *ks)
 		scene->camera.rotation.x -= 0.05 * speed;
 	if (is_key_down(ks, SDL_SCANCODE_DOWN))
 		scene->camera.rotation.x += 0.05 * speed;
+}
+
+void			scene_free(t_scene **scene)
+{
+	container_free((*scene)->objects.root);
+	lights_free((*scene)->lights.root);
+	free(*scene);
+	*scene = NULL;
 }

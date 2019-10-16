@@ -1,5 +1,9 @@
 {
 	"files.associations": {
-		"ft_printf.h": "c"
+		"ft_printf.h": "c",
+		"shapes.h": "c",
+		"vec3.h": "c",
+		"shape.h": "c",
+		"__node_handle": "c"
 	}
 }

@@ -6,14 +6,13 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 16:44:57 by nmartins       #+#    #+#                */
-/*   Updated: 2019/10/16 17:45:20 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/18 18:25:59 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shapes.h"
 #include "shape.h"
 #include <stdbool.h>
-#include <ft_printf.h>
 
 t_shape			make_sphere(double x, double y, double z, double r)
 {

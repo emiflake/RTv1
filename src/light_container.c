@@ -6,13 +6,14 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/28 16:54:18 by nmartins       #+#    #+#                */
-/*   Updated: 2019/10/16 18:54:41 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/18 18:37:11 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <libft.h>
+
 #include "scene.h"
 
-#include <ft_printf.h>
 #include <stdlib.h>
 
 t_light_container	*lights_make(void)
@@ -33,7 +34,7 @@ void				lights_push_light(t_light_node **node, t_light light)
 	new_node = (t_light_node*)malloc(sizeof(t_light_node));
 	if (!new_node)
 	{
-		ft_printf("Could not allocate memory for\
+		ft_putstr("Could not allocate memory for\
 			pushing of light to container\n");
 		exit(EXIT_FAILURE);
 	}

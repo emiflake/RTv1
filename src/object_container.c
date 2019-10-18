@@ -6,11 +6,11 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 16:19:02 by nmartins       #+#    #+#                */
-/*   Updated: 2019/10/16 18:54:35 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/18 18:25:50 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_printf.h>
+#include <libft.h>
 
 #include "object_container.h"
 
@@ -21,7 +21,7 @@ void				container_push_object(t_object_node **node, t_object *obj)
 	new_node = (t_object_node*)malloc(sizeof(t_object_node));
 	if (!new_node)
 	{
-		ft_printf("Could not allocate memory\
+		ft_putstr("Could not allocate memory\
 		for pushing of object to object_container\n");
 		exit(EXIT_FAILURE);
 	}

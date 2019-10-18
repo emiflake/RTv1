@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         ::::::::             #
-#    Makefile                                                :+:    :+:        #
+#    Makefile                                           :+:    :+:             #
 #                                                      +:+                     #
 #    By: emiflake <marvin@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/09/17 12:26:31 by emiflake       #+#    #+#                 #
-#    Updated: 2019/10/16 18:24:24 by nmartins            ########   odam.nl    #
+#    Updated: 2019/10/18 18:24:39 by nmartins      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ all: $(NAME)
 
 # Libraries sections
 #
-# Libraries: ft_printf, 42img, libft
+# Libraries: 42img, libft
 
 LIBFT_DIR=	./libft
 LIBFT=		$(LIBFT_DIR)/libft.a
@@ -37,18 +37,6 @@ clean_libft:
 	@echo "$(TIME) $(CMINUS) Cleaning libft"
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 
-FT_PRINTF_DIR=	./ft_printf
-FT_PRINTF=	$(FT_PRINTF_DIR)/libftprintf.a
-FT_PRINTF_INC=	$(FT_PRINTF_DIR)
-
-$(FT_PRINTF):
-	@echo "$(TIME) $(CPLUS) Making ft_printf"
-	@$(MAKE) -C $(FT_PRINTF_DIR)
-
-clean_ft_printf:
-	@echo "$(TIME) $(CMINUS) Cleaning ft_printf"
-	@$(MAKE) -C $(FT_PRINTF_DIR) fclean
-
 OBJ_DIR=	.obj
 OBJ_NAMES=	\
 		main \
@@ -59,6 +47,8 @@ OBJ_NAMES=	\
 		material \
 		shape \
 		sphere \
+		cylinder \
+		cone \
 		plane \
 		vec3_add \
 		vec3_calc \
@@ -78,16 +68,15 @@ SOURCES=	$(patsubst %, %.c, $(OBJ_NAMES))
 
 INC_DIR=	./inc
 INCLUDES=	$(wildcard $(INC_DIR)/*.h)
-IFLAGS=		-I$(INC_DIR) -I$(FT_PRINTF_INC) \
+IFLAGS=		-I$(INC_DIR) \
 			-I$(LIBFT_DIR) \
 			-I$(shell brew --prefix)/include
 
 LFLAGS=		\
-		-L$(FT_PRINTF_DIR) -lftprintf \
 		-L$(LIBFT_DIR) -lft \
 		$(shell sdl2-config --libs) \
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES) $(FT_PRINTF) $(LIBFT)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES) $(LIBFT)
 	@mkdir -p $(OBJ_DIR)
 	@echo "$(TIME) $(CPLUS) $@"
 	@$(CC) -c -o $@ $< $(IFLAGS) $(FLAGS)
@@ -96,7 +85,7 @@ $(NAME): $(OBJECTS)
 	@echo "$(TIME) $(CPLUS) $@"
 	@$(CC) -o $(NAME) $(LFLAGS) $(OBJECTS)
 
-clean: clean_ft_printf clean_libft
+clean: clean_libft
 	@echo "$(TIME) $(CMINUS) $(OBJ_DIR)"
 	@$(RM) -rf $(OBJ_DIR)
 

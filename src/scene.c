@@ -6,11 +6,9 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 16:10:45 by nmartins       #+#    #+#                */
-/*   Updated: 2019/10/16 18:54:48 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/18 18:35:41 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <ft_printf.h>
 
 #include "scene.h"
 #include "app.h"
@@ -32,15 +30,16 @@ void			make_objects(t_scene *scene)
 
 	my_object = (t_object*)crash_alloc(sizeof(t_object));
 	my_object->material = make_material(RED, 0.2, 0.8);
-	my_object->shape = make_sphere(0.0, 5.0, 10.0, 5.0);
+	my_object->shape = make_sphere(0.0, 5.0, 8.0, 5.0);
+	container_push_object(&scene->objects.root, my_object);
+	my_object = (t_object*)crash_alloc(sizeof(t_object));
+	my_object->material = make_material((t_vec3){180.0, 180.0, 0.0}, 0.2, 0.8);
+	my_object->shape = make_cone((t_vec3){10.0, 5.0, 10.0}, 10.0, 5.0);
 	container_push_object(&scene->objects.root, my_object);
 	my_object = (t_object*)crash_alloc(sizeof(t_object));
 	my_object->material = make_material(GREEN, 0.2, 0.8);
-	my_object->shape = make_sphere(10.0, 5.0, 10.0, 5.0);
-	container_push_object(&scene->objects.root, my_object);
-	my_object = (t_object*)crash_alloc(sizeof(t_object));
-	my_object->material = make_material(BLUE, 0.2, 0.8);
-	my_object->shape = make_sphere(-10.0, 5.0, 10.0, 5.0);
+	my_object->shape = make_cylinder(-10.0, 5.0, 10.0, 5.0);
+	my_object->shape.value.cylinder.rot.z += M_PI_4;
 	container_push_object(&scene->objects.root, my_object);
 	my_object = (t_object*)crash_alloc(sizeof(t_object));
 	my_object->material = make_material(WHITE, 0.2, 0.8);
@@ -61,9 +60,7 @@ void			my_scene_make(t_scene *scene)
 	camera_recompute(&scene->camera);
 	make_objects(scene);
 	lights_push_light(&scene->lights.root, (t_light){
-		.position = (t_vec3){0, 5.0, 0}, .brightness = 1.0, });
-	lights_push_light(&scene->lights.root, (t_light){
-		.position = (t_vec3){0, 20, 10}, .brightness = 1.0, });
+		.position = (t_vec3){10.0, 10.0, -5.0}, .brightness = 1.0, });
 }
 
 void			scene_update(t_scene *scene, t_keystate *ks)

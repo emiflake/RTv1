@@ -6,12 +6,11 @@
 /*   By: emiflake <marvin@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/18 15:21:20 by emiflake       #+#    #+#                */
-/*   Updated: 2019/10/16 18:54:17 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/18 18:25:30 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <SDL2/SDL.h>
-#include <ft_printf.h>
 #include <libft.h>
 
 #include "app.h"
@@ -25,7 +24,7 @@ int				app_make(t_app *app, size_t width, size_t height)
 	app->running = true;
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 		return (1);
-	ft_printf("Successfully initialized SDL with Video\n");
+	ft_putstr("Successfully initialized SDL with Video\n");
 	app->window = SDL_CreateWindow(
 		"RTv1", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		app->width, app->height, SDL_WINDOW_SHOWN);

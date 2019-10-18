@@ -4,6 +4,9 @@
 		"shapes.h": "c",
 		"vec3.h": "c",
 		"shape.h": "c",
-		"__node_handle": "c"
+		"__node_handle": "c",
+		"intersection.h": "c",
+		"stdbool.h": "c",
+		"ray.h": "c"
 	}
 }

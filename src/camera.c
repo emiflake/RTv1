@@ -6,11 +6,9 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 17:43:01 by nmartins       #+#    #+#                */
-/*   Updated: 2019/10/16 15:50:10 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/18 18:26:10 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <ft_printf.h>
 
 #include "camera.h"
 #include "vec2.h"

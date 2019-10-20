@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/23 15:54:56 by nmartins       #+#    #+#                */
-/*   Updated: 2019/10/18 17:58:08 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/20 18:13:08 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,27 @@ bool			cylinder_intersect(
 
 typedef struct	s_cone
 {
-	double	cos_alpha_sq;
-	double	sin_alpha_sq;
+	double	cas;
+	double	sas;
 	t_vec3	origin;
 	double	h;
 	double	r;
 	t_vec3	rot;
 }				t_cone;
+
+typedef struct	s_cone_f
+{
+	const t_cone	*co;
+	t_vec3			rd;
+	t_vec3			rot_orig;
+	t_vec3			p0;
+	double			a;
+	double			b;
+	double			c;
+	double			delta;
+	double			t;
+	double			y;
+}				t_cone_f;
 
 bool			cone_intersect(
 	const struct s_shape *shape, const t_ray *ray, t_intersection *isect);

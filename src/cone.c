@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/18 17:22:31 by nmartins       #+#    #+#                */
-/*   Updated: 2019/10/18 18:29:35 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/20 18:12:11 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,35 +34,38 @@ static t_vec3	calc_normal(const t_vec3 *p, const t_cone *cone)
 	return (n);
 }
 
+void			define_abc(t_cone_f *f)
+{
+	f->a = f->co->cas * pow(f->rd.x, 2)
+		+ f->co->cas * pow(f->rd.z, 2) - f->co->sas * pow(f->rd.y, 2);
+	f->b = f->co->cas * f->rd.x * f->p0.x
+		+ f->co->cas * f->rd.z * f->p0.z - f->co->sas * f->rd.y * f->p0.y;
+	f->c = f->co->cas * f->p0.x * f->p0.x
+		+ f->co->cas * f->p0.z * f->p0.z - f->co->sas * f->p0.y * f->p0.y;
+}
+
 bool			cone_intersect(
 	const struct s_shape *shape, const t_ray *ray, t_intersection *isect)
 {
-	const t_cone *cone = &shape->value.cone;
-	const t_vec3 rot_dir = vec3_rotxyzk(&ray->direction, &cone->rot);
-	const t_vec3 rot_orig = vec3_rotxyzk(&ray->origin, &cone->rot);
-	const t_vec3 p0 = vec3_sub(&rot_orig, &cone->origin);
-	const double a = cone->cos_alpha_sq*rot_dir.x*rot_dir.x+cone->cos_alpha_sq*rot_dir.z*rot_dir.z-cone->sin_alpha_sq*rot_dir.y*rot_dir.y;
-	const double b = cone->cos_alpha_sq*rot_dir.x*p0.x +cone->cos_alpha_sq*rot_dir.z*p0.z-cone->sin_alpha_sq*rot_dir.y*p0.y;
-	const double c = cone->cos_alpha_sq*p0.x*p0.x+cone->cos_alpha_sq*p0.z*p0.z-cone->sin_alpha_sq*p0.y*p0.y;
-	const double delta = b * b - a * c;
-	double t;
-	double y;
+	t_cone_f	f;
 
-	if (delta < 0.0001)
+	f.co = &shape->value.cone;
+	f.rd = vec3_rotxyzk(&ray->direction, &f.co->rot);
+	f.rot_orig = vec3_rotxyzk(&ray->origin, &f.co->rot);
+	define_abc(&f);
+	f.p0 = vec3_sub(&f.rot_orig, &f.co->origin);
+	f.delta = f.b * f.b - f.a * f.c;
+	if (f.delta < 0.0001)
 		return (false);
-	t = (-b - sqrt (delta))/a;
-	if (t < 0.00001)
+	f.t = (-f.b - sqrt(f.delta)) / f.a;
+	if (f.t < 0.00001)
 		return (false);
-	y = p0.y + t * rot_dir.y;
-	// if (y < -cone->h - 0.00001)
-	// 	return false;
-	if (t <= 0.00001)
-		return (false);
-	if (t < isect->t)
+	f.y = f.p0.y + f.t * f.rd.y;
+	if (f.t > 0.00001 && f.t < isect->t)
 	{
-		isect->t = t;
-		isect->p = ray_function(ray, t);
-		isect->normal = calc_normal(&isect->p, cone);
+		isect->t = f.t;
+		isect->p = ray_function(ray, f.t);
+		isect->normal = calc_normal(&isect->p, f.co);
 		return (true);
 	}
 	return (false);
@@ -81,8 +84,8 @@ t_shape			make_cone(t_vec3 origin, double h, double r)
 			.origin = origin,
 			.r = r,
 			.h = h,
-			.cos_alpha_sq = h / d,
-			.sin_alpha_sq = r / d,
+			.cas = h / d,
+			.sas = r / d,
 		}},
 	});
 }

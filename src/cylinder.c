@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/18 14:54:09 by nmartins       #+#    #+#                */
-/*   Updated: 2019/10/18 17:10:39 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/20 16:40:27 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ static t_vec3	ray_function(const t_ray *ray, double t)
 	return (vec3_add(&ray->origin, &dir_vec));
 }
 
-static t_vec3	calc_normal(const t_vec3 *p, const t_vec3 *origin)
+static t_vec3	calc_normal(
+	const t_vec3 *p, const t_vec3 *origin, const t_vec3 *rot)
 {
 	const t_vec3	smol_origin = (t_vec3){origin->x, p->y, origin->z};
-	const t_vec3	unnorm = vec3_sub(p, &smol_origin);
+	const t_vec3	rot_orig = vec3_rotxyzk(&smol_origin, rot);
+	const t_vec3	unnorm = vec3_sub(p, &rot_orig);
 
 	return (vec3_normalized(&unnorm));
 }
@@ -50,7 +52,8 @@ bool			cylinder_intersect(
 	{
 		isect->t = f.t;
 		isect->p = ray_function(ray, f.t);
-		isect->normal = calc_normal(&isect->p, &f.cylinder->origin);
+		isect->normal = calc_normal(&isect->p,
+		&f.cylinder->origin, &f.cylinder->rot);
 		return (true);
 	}
 	return (false);

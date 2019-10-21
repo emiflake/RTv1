@@ -6,7 +6,7 @@
 /*   By: nmartins <nmartins@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/18 17:22:31 by nmartins       #+#    #+#                */
-/*   Updated: 2019/10/20 18:12:11 by nmartins      ########   odam.nl         */
+/*   Updated: 2019/10/21 15:16:20 by nmartins      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,14 @@ static t_vec3	calc_normal(const t_vec3 *p, const t_cone *cone)
 void			define_abc(t_cone_f *f)
 {
 	f->a = f->co->cas * pow(f->rd.x, 2)
-		+ f->co->cas * pow(f->rd.z, 2) - f->co->sas * pow(f->rd.y, 2);
+		+ f->co->cas * pow(f->rd.z, 2)
+		- f->co->sas * pow(f->rd.y, 2);
 	f->b = f->co->cas * f->rd.x * f->p0.x
-		+ f->co->cas * f->rd.z * f->p0.z - f->co->sas * f->rd.y * f->p0.y;
+		+ f->co->cas * f->rd.z * f->p0.z
+		- f->co->sas * f->rd.y * f->p0.y;
 	f->c = f->co->cas * f->p0.x * f->p0.x
-		+ f->co->cas * f->p0.z * f->p0.z - f->co->sas * f->p0.y * f->p0.y;
+		+ f->co->cas * f->p0.z * f->p0.z
+		- f->co->sas * f->p0.y * f->p0.y;
 }
 
 bool			cone_intersect(
@@ -52,8 +55,8 @@ bool			cone_intersect(
 	f.co = &shape->value.cone;
 	f.rd = vec3_rotxyzk(&ray->direction, &f.co->rot);
 	f.rot_orig = vec3_rotxyzk(&ray->origin, &f.co->rot);
-	define_abc(&f);
 	f.p0 = vec3_sub(&f.rot_orig, &f.co->origin);
+	define_abc(&f);
 	f.delta = f.b * f.b - f.a * f.c;
 	if (f.delta < 0.0001)
 		return (false);
